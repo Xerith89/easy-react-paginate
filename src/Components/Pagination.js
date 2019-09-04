@@ -62,16 +62,23 @@ export default class Pagination extends Component {
         }
         return (
             <div> 
+                <ul>
+                {this.state.paginatedData.map((item) => {
+                    return (
+                       <li>{item.title}</li> 
+                    )
+                })}
+                </ul>
                 <nav aria-label="Page navigation example">
                     <ul className="pagination justify-content-center">
                         <li className="page-item">
-                        {this.state.currentPage === 1 ? <button id="previousPage" name="previousPage" onClick={this.handleClick} className="btn disabled" aria-label="Previous" disabled><span aria-hidden="true"><FontAwesomeIcon icon={faChevronLeft} /></span></button> :
+                        {this.state.currentPage === 1 ? <button id="previousPage" name="previousPage" onClick={this.handleClick} className="disabled" style={{border: '0', background: 'none'}} aria-label="Previous" disabled><span aria-hidden="true"><FontAwesomeIcon icon={faChevronLeft} /></span></button> :
                         <button name="previousPage" onClick={this.handleClick} style={{border: '0', background: 'none'}} className="page-link" href="/" aria-label="Previous"><span aria-hidden="true"><FontAwesomeIcon icon={faChevronLeft} /></span></button>} 
                         </li>
             
                             {pages.map((value) => {
                             value !== this.state.currentPage ? pagebutton = <li key={value} className="page-item"><button name={`value${value}`} style={{border: '0', background: 'none'}} className="page-link" value={value} onClick={this.handleClick}>{value}
-                            </button></li> : pagebutton = <li key={value} className="page-item"><button className="btn disabled" value={value} onClick={this.handleClick} disabled><strong>{value}</strong></button></li>
+                            </button></li> : pagebutton = <li key={value} className="page-item"><button className="btn" value={value} style={{border: '0', background: 'none'}} onClick={this.handleClick} disabled><strong>{value}</strong></button></li>
                             return (pagebutton)
                         })}
                         
