@@ -110,7 +110,7 @@ export default class Pagination extends Component {
                         <li className="page-item">
                         {this.state.currentPage < this.state.finalPage ?
                         <button id="lastPage" name="lastPage" onClick={this.handleClick} style={{border: '0', background: 'none'}} aria-label="Last" ><span aria-hidden="true"><FontAwesomeIcon icon={faChevronRight} /><FontAwesomeIcon icon={faChevronRight} /></span></button> :
-                        <button name="lastPage" className="disabled"  onClick={this.handleClick} style={{border: '0', background: 'none'}} className="page-link" href="/" aria-label="Last"><span aria-hidden="true"><FontAwesomeIcon icon={faChevronRight} /><FontAwesomeIcon icon={faChevronRight}disabled /></span></button>
+                        <button id="lastPage" name="lastPage" onClick={this.handleClick} style={{border: '0', background: 'none'}} className="page-link disabled" href="/" aria-label="Last"><span aria-hidden="true"><FontAwesomeIcon icon={faChevronRight} /><FontAwesomeIcon icon={faChevronRight} disabled /></span></button>
                         }</li>
                         
                     </ul>
