@@ -30,25 +30,40 @@ export default class Pagination extends Component {
     handleClick = (event) => {
 
         const {recordsPerPage, data} = this.props;
-        if (event.currentTarget.name === 'nextPage') {
+        switch (event.currentTarget.name) {
+        case 'nextPage': 
             this.setState({
                 currentPage: this.state.currentPage+1,
                 paginatedData: data.slice(this.state.currentPage*recordsPerPage,(this.state.currentPage*recordsPerPage)+recordsPerPage),
             });
-        } else if (event.currentTarget.name === 'previousPage') {
+            break;
+        case 'firstPage' :
+            this.setState({
+                currentPage: 1,
+                paginatedData: data.slice(0,0+recordsPerPage),
+            });
+            break;
+        case 'previousPage':
             const offset = (this.state.currentPage-2)*recordsPerPage
             this.setState({
                 currentPage: this.state.currentPage - 1,
                 paginatedData: data.slice(offset,offset+recordsPerPage),
             });
-        }
-        else {
+            break;
+        case 'lastPage':
+            this.setState({
+                currentPage: this.state.finalPage,
+                paginatedData: data.slice(this.state.finalPage*recordsPerPage-recordsPerPage, this.state.finalPage*recordsPerPage+recordsPerPage),
+            });
+            break;
+       default:
             const page = parseInt(event.target.value);
-            const offset = (page*recordsPerPage)-recordsPerPage;
+            const pageOffset = (page*recordsPerPage)-recordsPerPage;
             this.setState({
                 currentPage: page,
-                paginatedData: data.slice(offset,offset+recordsPerPage),
+                paginatedData: data.slice(pageOffset,pageOffset+recordsPerPage),
             });
+            break;
         }
     }
 
@@ -60,17 +75,21 @@ export default class Pagination extends Component {
         for(let i = 1; i <= this.state.finalPage; i++) {
             pages.push(i);
         }
+
+        let newChild = React.cloneElement(this.props.children, {
+            paginatedData: this.state.paginatedData});
+
         return (
             <div> 
-                <ul>
-                {this.state.paginatedData.map((item) => {
-                    return (
-                       <li>{item.title}</li> 
-                    )
-                })}
-                </ul>
+                <div>{newChild}</div>
                 <nav aria-label="Page navigation example">
                     <ul className="pagination justify-content-center">
+                        <li className="page-item">
+                        {this.state.currentPage === 1 ?
+                        <button id="firstPage" name="firstPage" onClick={this.handleClick} className="disabled" style={{border: '0', background: 'none'}} aria-label="First" disabled><span aria-hidden="true"><FontAwesomeIcon icon={faChevronLeft} /><FontAwesomeIcon icon={faChevronLeft} /></span></button> :
+                        <button name="firstPage" onClick={this.handleClick} style={{border: '0', background: 'none'}} className="page-link" href="/" aria-label="First"><span aria-hidden="true"><FontAwesomeIcon icon={faChevronLeft} /><FontAwesomeIcon icon={faChevronLeft} /></span></button>
+                        }</li>
+
                         <li className="page-item">
                         {this.state.currentPage === 1 ? <button id="previousPage" name="previousPage" onClick={this.handleClick} className="disabled" style={{border: '0', background: 'none'}} aria-label="Previous" disabled><span aria-hidden="true"><FontAwesomeIcon icon={faChevronLeft} /></span></button> :
                         <button name="previousPage" onClick={this.handleClick} style={{border: '0', background: 'none'}} className="page-link" href="/" aria-label="Previous"><span aria-hidden="true"><FontAwesomeIcon icon={faChevronLeft} /></span></button>} 
@@ -82,11 +101,17 @@ export default class Pagination extends Component {
                             return (pagebutton)
                         })}
                         
-                        {this.state.currentPage !== this.state.finalPage ? <button id="nextPage"style={{border: '0',  background: 'none'}}  name="nextPage" onClick={this.handleClick}className="page-link" aria-label="Next">
+                        {this.state.currentPage < this.state.finalPage ? <button id="nextPage"style={{border: '0',  background: 'none'}}  name="nextPage" onClick={this.handleClick}className="page-link" aria-label="Next">
                             <span aria-hidden="true"><FontAwesomeIcon icon={faChevronRight} /></span>
                         </button> : <button name="nextPage" onClick={this.handleClick}className="btn disabled" aria-label="Next" disabled>
                             <span aria-hidden="true"><FontAwesomeIcon icon={faChevronRight} /></span>
                         </button>}
+
+                        <li className="page-item">
+                        {this.state.currentPage < this.state.finalPage ?
+                        <button id="lastPage" name="lastPage" onClick={this.handleClick} style={{border: '0', background: 'none'}} aria-label="Last" ><span aria-hidden="true"><FontAwesomeIcon icon={faChevronRight} /><FontAwesomeIcon icon={faChevronRight} /></span></button> :
+                        <button name="lastPage" className="disabled"  onClick={this.handleClick} style={{border: '0', background: 'none'}} className="page-link" href="/" aria-label="Last"><span aria-hidden="true"><FontAwesomeIcon icon={faChevronRight} /><FontAwesomeIcon icon={faChevronRight}disabled /></span></button>
+                        }</li>
                         
                     </ul>
                 </nav>
