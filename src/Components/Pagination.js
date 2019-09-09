@@ -27,7 +27,11 @@ export default class Pagination extends Component {
     }
 
     calculateRange = () => {
-        return this.props.range + this.state.currentPage;
+       if (this.props.range + this.state.currentPage < this.state.finalPage) {
+        return this.props.range;
+       } else {
+        return this.state.finalPage ;
+       }
     }
 
 
@@ -141,5 +145,6 @@ export default class Pagination extends Component {
 
 Pagination.propTypes = {
     data: PropTypes.array,
-    recordsPerPage: PropTypes.number
+    recordsPerPage: PropTypes.number,
+    range: PropTypes.number
 }
