@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Pagination from './Pagination'
+import DisplayComponent from './DisplayComponent'
 
 export default class BaseComponent extends Component {
 
@@ -27,7 +28,9 @@ export default class BaseComponent extends Component {
     render() {
         return (
             <div className="container">
-                <Pagination data={this.state.data} recordsPerPage={2} />
+                <Pagination data={this.state.data} recordsPerPage={2} range={3}>
+                    <DisplayComponent test={"Test"}/>
+                </Pagination>
             </div>
         )
     }
