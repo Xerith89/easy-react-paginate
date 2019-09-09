@@ -24,7 +24,11 @@ export default class Pagination extends Component {
             finalPage: Math.ceil(this.props.data.length/this.props.recordsPerPage)
         });
         }
-      }
+    }
+
+    calculateRange = () => {
+        return this.props.range + this.state.currentPage;
+    }
 
 
     handleClick = (event) => {
@@ -72,8 +76,14 @@ export default class Pagination extends Component {
 
         let pages = [];
         let pagebutton;
-        for(let i = 1; i <= this.state.finalPage; i++) {
-            pages.push(i);
+        if (this.props.range !== null) {
+            for(let i = this.state.currentPage; i <= this.calculateRange(); i++) {
+                pages.push(i);
+            }
+        } else {
+            for(let i = 1; i <= this.state.finalPage; i++) {
+                pages.push(i);
+            }
         }
 
         let newChild = React.cloneElement(this.props.children, {
@@ -84,22 +94,31 @@ export default class Pagination extends Component {
                 <div>{newChild}</div>
                 <nav aria-label="Page navigation example">
                     <ul className="pagination justify-content-center">
+
                         <li className="page-item">
                         {this.state.currentPage === 1 ?
                         <button id="firstPage" name="firstPage" onClick={this.handleClick} className="disabled" style={{border: '0', background: 'none'}} aria-label="First" disabled><span aria-hidden="true"><FontAwesomeIcon icon={faChevronLeft} /><FontAwesomeIcon icon={faChevronLeft} /></span></button> :
                         <button name="firstPage" onClick={this.handleClick} style={{border: '0', background: 'none'}} className="page-link" href="/" aria-label="First"><span aria-hidden="true"><FontAwesomeIcon icon={faChevronLeft} /><FontAwesomeIcon icon={faChevronLeft} /></span></button>
                         }</li>
-
+                      
                         <li className="page-item">
                         {this.state.currentPage === 1 ? <button id="previousPage" name="previousPage" onClick={this.handleClick} className="disabled" style={{border: '0', background: 'none'}} aria-label="Previous" disabled><span aria-hidden="true"><FontAwesomeIcon icon={faChevronLeft} /></span></button> :
                         <button name="previousPage" onClick={this.handleClick} style={{border: '0', background: 'none'}} className="page-link" href="/" aria-label="Previous"><span aria-hidden="true"><FontAwesomeIcon icon={faChevronLeft} /></span></button>} 
                         </li>
+                        
+                        <li className="page-item">
+                        {this.props.range !== null && this.state.currentPage !== 1 ? "..." : null}
+                        </li>
             
-                            {pages.map((value) => {
-                            value !== this.state.currentPage ? pagebutton = <li key={value} className="page-item"><button name={`value${value}`} style={{border: '0', background: 'none'}} className="page-link" value={value} onClick={this.handleClick}>{value}
-                            </button></li> : pagebutton = <li key={value} className="page-item"><button className="btn" value={value} style={{border: '0', background: 'none'}} onClick={this.handleClick} disabled><strong>{value}</strong></button></li>
+                        {pages.map((value) => {
+                        value !== this.state.currentPage ? pagebutton = <li key={value} className="page-item"><button name={`value${value}`} style={{border: '0', background: 'none'}} className="page-link" value={value} onClick={this.handleClick}>{value}
+                        </button></li> : pagebutton = <li key={value} className="page-item"><button className="btn" value={value} style={{border: '0', background: 'none'}} onClick={this.handleClick} disabled><strong>{value}</strong></button></li>
                             return (pagebutton)
                         })}
+
+                        <li className="page-item">
+                        {this.props.range !== null && this.state.currentPage !== this.state.finalPage ? "..." : null}
+                        </li>
                         
                         {this.state.currentPage < this.state.finalPage ? <button id="nextPage"style={{border: '0',  background: 'none'}}  name="nextPage" onClick={this.handleClick}className="page-link" aria-label="Next">
                             <span aria-hidden="true"><FontAwesomeIcon icon={faChevronRight} /></span>
