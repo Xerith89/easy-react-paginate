@@ -27,11 +27,8 @@ export default class Pagination extends Component {
     }
 
     calculateRange = () => {
-       if (this.props.range + this.state.currentPage < this.state.finalPage) {
-        return this.props.range;
-       } else {
-        return this.state.finalPage ;
-       }
+        return Math.min(this.props.range + this.state.currentPage, this.state.finalPage);
+     
     }
 
 
@@ -81,15 +78,17 @@ export default class Pagination extends Component {
         let pages = [];
         let pagebutton;
         if (this.props.range !== null) {
-            for(let i = this.state.currentPage; i <= this.calculateRange(); i++) {
-                pages.push(i);
+            for(let i = this.calculateRange()-this.props.range; i < this.calculateRange(); i++) {
+                if (i <= this.state.finalPage) {
+                    pages.push(i);
+                }
             }
         } else {
             for(let i = 1; i <= this.state.finalPage; i++) {
                 pages.push(i);
             }
-        }
-
+        }  
+        console.log(pages);
         let newChild = React.cloneElement(this.props.children, {
             paginatedData: this.state.paginatedData});
 
@@ -121,7 +120,7 @@ export default class Pagination extends Component {
                         })}
 
                         <li className="page-item">
-                        {this.props.range !== null && this.state.currentPage !== this.state.finalPage ? "..." : null}
+                        {this.props.range !== null && pages.includes(this.state.finalPage) ? null : "..."}
                         </li>
                         
                         {this.state.currentPage < this.state.finalPage ? <button id="nextPage"style={{border: '0',  background: 'none'}}  name="nextPage" onClick={this.handleClick}className="page-link" aria-label="Next">
