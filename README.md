@@ -1,7 +1,7 @@
 [![CircleCI](https://circleci.com/gh/Xerith89/easy-react-paginate.svg?style=svg)](https://circleci.com/gh/Xerith89/easy-react-paginate)
 [![npm version](https://badge.fury.io/js/easy-react-paginate.svg)](https://badge.fury.io/js/easy-react-paginate)
 
-## Easy React Pagination
+## Easy React Paginate
 
 ### What Is It?
 
