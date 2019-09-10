@@ -140,3 +140,4 @@ describe('Pagination Buttons Behave As Expected', () => {
         expect(wrapper.instance().handleClick).toHaveBeenCalledTimes(2);
         wrapper.unmount();
     });
+});
