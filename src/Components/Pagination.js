@@ -27,8 +27,8 @@ export default class Pagination extends Component {
     }
 
     calculateRange = () => {
+        //final page +1 will mean our for loop stops are the final page
         return Math.min((this.props.range + this.state.currentPage), this.state.finalPage+1);
-     
     }
 
 
@@ -76,12 +76,12 @@ export default class Pagination extends Component {
     }
 
     render() {
+        //To be extracted into something a bit cleaner and more functional
         let pages = [];
-        let pagebutton;
         if (this.props.range !== null) {
+            //Subtracting range ensures there are always x many pages displayed where x refers to the range
             for(let i = (this.calculateRange()-this.props.range); i < this.calculateRange(); i++) {
                 if (i <= this.state.finalPage) {
-                    console.log(this.calculateRange());
                     pages.push(i);
                 }
             }
@@ -89,10 +89,13 @@ export default class Pagination extends Component {
             for(let i = 1; i <= this.state.finalPage; i++) {
                 pages.push(i);
             }
-        }  
+        }
+        //
+
         let newChild = React.cloneElement(this.props.children, {
             paginatedData: this.state.paginatedData});
 
+        let pagebutton;
         return (
             <div> 
                 <div>{newChild}</div>
@@ -146,5 +149,6 @@ export default class Pagination extends Component {
 Pagination.propTypes = {
     data: PropTypes.array,
     recordsPerPage: PropTypes.number,
-    range: PropTypes.number
+    range: PropTypes.number,
+    children: PropTypes.element
 }
