@@ -149,6 +149,7 @@ export default class Pagination extends Component {
 Pagination.propTypes = {
     data: PropTypes.array,
     recordsPerPage: PropTypes.number,
+    totalRecords: PropTypes.number,
     range: PropTypes.number,
     children: PropTypes.any
 }
