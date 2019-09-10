@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/Xerith89/easy-react-paginate.svg?style=svg)](https://circleci.com/gh/Xerith89/easy-react-paginate)
+
 ## Easy React Pagination
 
 ### What Is It?
