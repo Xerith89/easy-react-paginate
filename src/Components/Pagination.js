@@ -27,7 +27,7 @@ export default class Pagination extends Component {
     }
 
     calculateRange = () => {
-        return Math.min(this.props.range + this.state.currentPage, this.state.finalPage);
+        return Math.min((this.props.range + this.state.currentPage), this.state.finalPage+1);
      
     }
 
@@ -62,7 +62,10 @@ export default class Pagination extends Component {
             });
             break;
        default:
-            const page = parseInt(event.target.value);
+            let page;
+            try {
+            page = parseInt(event.target.value);
+            } catch (error) { console.log(error);}
             const pageOffset = (page*recordsPerPage)-recordsPerPage;
             this.setState({
                 currentPage: page,
@@ -72,14 +75,13 @@ export default class Pagination extends Component {
         }
     }
 
-
     render() {
-
         let pages = [];
         let pagebutton;
         if (this.props.range !== null) {
-            for(let i = this.calculateRange()-this.props.range; i < this.calculateRange(); i++) {
+            for(let i = (this.calculateRange()-this.props.range); i < this.calculateRange(); i++) {
                 if (i <= this.state.finalPage) {
+                    console.log(this.calculateRange());
                     pages.push(i);
                 }
             }
@@ -88,7 +90,6 @@ export default class Pagination extends Component {
                 pages.push(i);
             }
         }  
-        console.log(pages);
         let newChild = React.cloneElement(this.props.children, {
             paginatedData: this.state.paginatedData});
 
