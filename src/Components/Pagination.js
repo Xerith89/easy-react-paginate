@@ -8,9 +8,9 @@ export default class Pagination extends Component {
         super(props)
         this.state = {
             currentPage: 1,
-            totalRecords: 0,
+            totalRecords: this.props.totalRecords,
             paginatedData: [],
-            finalPage: 0
+            lastPage: 0
         }
       
     }
@@ -19,16 +19,16 @@ export default class Pagination extends Component {
         if(prevProps.data !== this.props.data) {
           this.setState({
             paginatedData: this.props.data.slice(this.currentPage-1,this.props.recordsPerPage), 
-            totalRecords:this.props.data.length,
+            totalRecords:this.props.totalRecords,
             currentPage: 1,
-            finalPage: Math.ceil(this.props.data.length/this.props.recordsPerPage)
+            lastPage: Math.ceil(this.props.data.length/this.props.recordsPerPage)
         });
         }
     }
 
     calculateRange = () => {
         //final page +1 will mean our for loop stops are the final page
-        return Math.min((this.props.range + this.state.currentPage), this.state.finalPage+1);
+        return Math.min((this.props.range + this.state.currentPage), this.state.lastPage+1);
     }
 
 
@@ -38,7 +38,7 @@ export default class Pagination extends Component {
         switch (event.currentTarget.name) {
         case 'nextPage': 
             this.setState({
-                currentPage: this.state.currentPage+1,
+                currentPage: this.state.currentPage == this.state.lastPage ? this.state.currentPage : this.state.currentPage+1,
                 paginatedData: data.slice(this.state.currentPage*recordsPerPage,(this.state.currentPage*recordsPerPage)+recordsPerPage),
             });
             break;
@@ -51,14 +51,14 @@ export default class Pagination extends Component {
         case 'previousPage':
             const offset = (this.state.currentPage-2)*recordsPerPage
             this.setState({
-                currentPage: this.state.currentPage - 1,
+                currentPage: this.state.currentPage == 1 ? this.state.currentPage : this.state.currentPage-1,
                 paginatedData: data.slice(offset,offset+recordsPerPage),
             });
             break;
         case 'lastPage':
             this.setState({
-                currentPage: this.state.finalPage,
-                paginatedData: data.slice(this.state.finalPage*recordsPerPage-recordsPerPage, this.state.finalPage*recordsPerPage+recordsPerPage),
+                currentPage: this.state.lastPage,
+                paginatedData: data.slice(this.state.lastPage*recordsPerPage-recordsPerPage, this.state.lastPage*recordsPerPage+recordsPerPage),
             });
             break;
        default:
@@ -81,12 +81,12 @@ export default class Pagination extends Component {
         if (this.props.range !== null) {
             //Subtracting range ensures there are always x many pages displayed where x refers to the range
             for(let i = (this.calculateRange()-this.props.range); i < this.calculateRange(); i++) {
-                if (i <= this.state.finalPage) {
+                if (i <= this.state.lastPage) {
                     pages.push(i);
                 }
             }
         } else {
-            for(let i = 1; i <= this.state.finalPage; i++) {
+            for(let i = 1; i <= this.state.lastPage; i++) {
                 pages.push(i);
             }
         }
@@ -119,22 +119,22 @@ export default class Pagination extends Component {
             
                         {pages.map((value) => {
                         value !== this.state.currentPage ? pagebutton = <li key={value} className="page-item"><button name={`value${value}`} style={{border: '0', background: 'none'}} className="page-link" value={value} onClick={this.handleClick}>{value}
-                        </button></li> : pagebutton = <li key={value} className="page-item"><button className="btn" value={value} style={{border: '0', background: 'none'}} onClick={this.handleClick} disabled><strong>{value}</strong></button></li>
+                        </button></li> : pagebutton = <li key={value} className="page-item"><button name={`value${value}`} className="btn" value={value} style={{border: '0', background: 'none'}} onClick={this.handleClick} disabled><strong>{value}</strong></button></li>
                             return (pagebutton)
                         })}
 
                         <li className="page-item">
-                        {this.props.range !== null && pages.includes(this.state.finalPage) ? null : "..."}
+                        {this.props.range !== null && pages.includes(this.state.lastPage) ? null : "..."}
                         </li>
                         
-                        {this.state.currentPage < this.state.finalPage ? <button id="nextPage"style={{border: '0',  background: 'none'}}  name="nextPage" onClick={this.handleClick}className="page-link" aria-label="Next">
+                        {this.state.currentPage < this.state.lastPage ? <button id="nextPage"style={{border: '0',  background: 'none'}}  name="nextPage" onClick={this.handleClick}className="page-link" aria-label="Next">
                             <span aria-hidden="true"><FontAwesomeIcon icon={faChevronRight} /></span>
                         </button> : <button name="nextPage" onClick={this.handleClick}className="btn disabled" aria-label="Next" disabled>
                             <span aria-hidden="true"><FontAwesomeIcon icon={faChevronRight} /></span>
                         </button>}
 
                         <li className="page-item">
-                        {this.state.currentPage < this.state.finalPage ?
+                        {this.state.currentPage < this.state.lastPage ?
                         <button id="lastPage" name="lastPage" onClick={this.handleClick} style={{border: '0', background: 'none'}} aria-label="Last" ><span aria-hidden="true"><FontAwesomeIcon icon={faChevronRight} /><FontAwesomeIcon icon={faChevronRight} /></span></button> :
                         <button id="lastPage" name="lastPage" onClick={this.handleClick} style={{border: '0', background: 'none'}} className="page-link disabled" href="/" aria-label="Last"><span aria-hidden="true"><FontAwesomeIcon icon={faChevronRight} /><FontAwesomeIcon icon={faChevronRight} disabled /></span></button>
                         }</li>
@@ -150,5 +150,5 @@ Pagination.propTypes = {
     data: PropTypes.array,
     recordsPerPage: PropTypes.number,
     range: PropTypes.number,
-    children: PropTypes.element
+    children: PropTypes.any
 }

@@ -28,7 +28,7 @@ export default class BaseComponent extends Component {
     render() {
         return (
             <div className="container">
-                <Pagination data={this.state.data} recordsPerPage={2} range={3}>
+                <Pagination data={this.state.data} recordsPerPage={2} totalRecords={10} range={3}>
                     <DisplayComponent test={"Test"}/>
                 </Pagination>
             </div>
