@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/Xerith89/easy-react-paginate.svg?style=svg)](https://circleci.com/gh/Xerith89/easy-react-paginate)
+https://badge.fury.io/js/easy-react-paginate.svg
 
 ## Easy React Pagination
 
@@ -12,6 +13,8 @@ Clone the project or copy the code from the Pagination component into your proje
 The project uses bootstrap CSS and the fortawesome react module as dependencies. Make sure there is a link to bootstrap somewhere, preferable index.html and that you run npm install.
 
 From then you just need to import the component wrap and embed your display component as children.
+
+The project is now available on npm so simply do npm install easy-react-paginate --save and import the paginate component into your project
 
 ### Reference
 
