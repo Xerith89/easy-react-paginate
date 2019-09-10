@@ -19,6 +19,8 @@ The Pagination component takes the following props:
 
 data (required) - An array of input data that you wish to be paginated
 
+totalRecords (required) - A number representing total data records being entered
+
 recordsPerPage(required) - A number representing how many elements of data you want per pagination,
 
 range (optional) - A number representing how many page numbers are displayed at one time e.g. a range of 5 will give links of 1,2,3,4,5
